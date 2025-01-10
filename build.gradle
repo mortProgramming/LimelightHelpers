@@ -1,0 +1,119 @@
+plugins {
+  id 'cpp'
+  id 'java'
+  id 'google-test'
+  id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin' version '2020.2'
+  id 'edu.wpi.first.NativeUtils' version '2024.6.1'
+  id 'edu.wpi.first.GradleJni' version '1.1.0'
+  id 'edu.wpi.first.GradleVsCode' version '2.1.0'
+  id 'edu.wpi.first.GradleRIO' version '2024.3.2'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+allprojects {
+    group 'com.LimelightHelpers'
+    version '1.9'
+
+    repositories {
+        mavenCentral()
+
+        maven { url = uri('https://frcmaven.wpi.edu/artifactory/release/') }
+    }
+}
+
+if (project.hasProperty('releaseMode')) {
+  wpilibRepositories.addAllReleaseRepositories(project)
+} else {
+  wpilibRepositories.addAllDevelopmentRepositories(project)
+}
+
+// Apply C++ configuration
+apply from: 'config.gradle'
+
+// Apply Java configuration
+dependencies {
+    implementation 'edu.wpi.first.cscore:cscore-java:2024.+'
+    implementation 'edu.wpi.first.cameraserver:cameraserver-java:2024.+'
+    implementation 'edu.wpi.first.ntcore:ntcore-java:2024.+'
+    implementation 'edu.wpi.first.wpilibj:wpilibj-java:2024.+'
+    implementation 'edu.wpi.first.wpiutil:wpiutil-java:2024.+'
+    implementation 'edu.wpi.first.wpimath:wpimath-java:2024.+'
+    implementation 'edu.wpi.first.wpiunits:wpiunits-java:2024.+'
+    implementation 'edu.wpi.first.hal:hal-java:2024.+'
+    implementation "org.ejml:ejml-simple:0.43.1"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:2.12.4"
+    implementation "com.fasterxml.jackson.core:jackson-core:2.12.4"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.12.4"
+    implementation 'edu.wpi.first.thirdparty.frc2024.opencv:opencv-java:4.8.0-2'
+
+    // implementation "edu.wpi.first.wpilibj:wpilibj-java:${wpilib_version}"
+    // implementation "edu.wpi.first.wpiutil:wpiutil-java:${wpilib_version}"
+    // implementation "edu.wpi.first.wpimath:wpimath-java:${wpilib_version}"
+    // implementation "edu.wpi.first.wpiunits:wpiunits-java:${wpilib_version}"
+
+    // for commands
+    // implementation 'edu.wpi.first.wpilibj2:wpilibj2-java:2024.+'
+    // implementation 'edu.wpi.first.wpilibNewCommands:wpilibNewCommands-java:2024.+'
+    // implementation 'edu.wpi.first.wpilibj:commands:2024.+'
+
+    // implementation "edu.wpi.first.wpilibj2:wpilibj2-java:${wpilib_version}"
+    implementation "edu.wpi.first.wpilibNewCommands:wpilibNewCommands-java:${wpilib_version}"
+    // implementation "edu.wpi.first.wpilibj:commands:${wpilib_version}"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+}
+
+// Set up exports properly
+nativeUtils {
+  exportsConfigs {
+    // Main library is just default empty. This will export everything
+    LimelightHelpers {
+    }
+  }
+  privateExportsConfigs {
+    // Only export explicit symbols from driver library
+    
+  }
+}
+
+model {
+  components {
+    LimelightHelpers(NativeLibrarySpec) {
+      sources {
+        cpp {
+          source {
+            srcDirs 'src/main/native/cpp'
+            include '**/*.cpp'
+          }
+          exportedHeaders {
+            srcDirs 'src/main/native/include'
+          }
+        }
+      }
+      nativeUtils.useRequiredLibrary(it, 'wpilib_shared')
+    }
+  }
+  testSuites {
+    LimelightHelpersTest {
+        sources.cpp {
+            source {
+                srcDir 'src/test/native/cpp'
+                include '**/*.cpp'
+            }
+        }
+        nativeUtils.useRequiredLibrary(it, "wpilib_executable_shared", "googletest_static")
+    }
+  }
+}
+
+apply from: 'publish.gradle'
+
+wrapper {
+  gradleVersion '8.4'
+}
