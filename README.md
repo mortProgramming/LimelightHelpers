@@ -1,12 +1,8 @@
-# mort's swerve stuff
+# LimelightHelpers Dowload
 
-another swerve library and avatar of the different brands?
+For when copy and pasting is too hard.
 
 ## Installation
 
 Use the vendordep link to get the latest stable release:
 > https://mortprogramming.github.io/LimelightHelpers/LimelightHelpers/LimelightHelpers.json
-
-## Template code
-
-https://github.com/mortProgramming/2024LimelightHelpersSwerveTemplate
