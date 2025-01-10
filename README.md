@@ -1,4 +1,4 @@
-# LimelightHelpers Dowload
+# LimelightHelpers Download
 
 For when copy and pasting is too hard.
 
