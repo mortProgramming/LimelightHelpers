@@ -9,11 +9,11 @@ Use the vendordep link to get the latest stable release:
 
 ## Documentation
 
-### Official Limelight Javadocs:
-https://limelightlib-wpijava-reference.limelightvision.io/frc/robot/package-summary.html
+> ### Official Limelight Javadocs:
+>> https://limelightlib-wpijava-reference.limelightvision.io/frc/robot/package-summary.html
 
-### Limelight Github:
-https://github.com/LimelightVision/limelightlib-wpijava/releases
+> ### Limelight Github:
+>> https://github.com/LimelightVision/limelightlib-wpijava/releases
 
-### Limelight Docs:
-https://docs.limelightvision.io/docs/docs-limelight/getting-started/summary
+> ### Limelight Docs:
+>> https://docs.limelightvision.io/docs/docs-limelight/getting-started/summary
